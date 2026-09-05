@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect('/login'));
+Route::get('/', fn () => view('home'))->name('home');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
