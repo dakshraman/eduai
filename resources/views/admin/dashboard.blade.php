@@ -19,7 +19,7 @@
                 </svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-gray-900">{{ $totalStudents ?? 0 }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $stats['students'] ?? 0 }}</p>
                 <p class="text-sm text-gray-500">Total Students</p>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 </svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-gray-900">{{ $totalTeachers ?? 0 }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $stats['teachers'] ?? 0 }}</p>
                 <p class="text-sm text-gray-500">Total Teachers</p>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 </svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-gray-900">{{ $totalClasses ?? 0 }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $stats['classes'] ?? 0 }}</p>
                 <p class="text-sm text-gray-500">Total Classes</p>
             </div>
         </div>
@@ -55,8 +55,43 @@
                 </svg>
             </div>
             <div>
-                <p class="text-2xl font-bold text-gray-900">{{ $totalNotices ?? 0 }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $stats['notices'] ?? 0 }}</p>
                 <p class="text-sm text-gray-500">Total Notices</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- Charts --}}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {{-- Enrollment Trend --}}
+        <div class="bg-white rounded-xl border border-gray-200 p-5">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Enrollment Trend</h2>
+            <div class="relative" style="height: 280px;">
+                <canvas id="enrollmentChart"></canvas>
+            </div>
+        </div>
+
+        {{-- Fee Collection --}}
+        <div class="bg-white rounded-xl border border-gray-200 p-5">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Fee Collection</h2>
+            <div class="relative" style="height: 280px;">
+                <canvas id="feeChart"></canvas>
+            </div>
+        </div>
+
+        {{-- Attendance Overview --}}
+        <div class="bg-white rounded-xl border border-gray-200 p-5">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Attendance Overview (This Week)</h2>
+            <div class="relative" style="height: 280px;">
+                <canvas id="attendanceChart"></canvas>
+            </div>
+        </div>
+
+        {{-- Students by Class --}}
+        <div class="bg-white rounded-xl border border-gray-200 p-5">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Students by Class</h2>
+            <div class="relative" style="height: 280px;">
+                <canvas id="classChart"></canvas>
             </div>
         </div>
     </div>
@@ -68,7 +103,7 @@
             <a href="{{ route('notices.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">View All</a>
         </div>
         <div class="divide-y divide-gray-100">
-            @forelse($recentNotices ?? [] as $notice)
+            @forelse($notices as $notice)
                 <div class="px-5 py-4 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full
@@ -87,4 +122,111 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Month labels (last 6 months)
+    const monthLabels = @json(collect(range(5, 0))->map(fn($i) => now()->subMonths($i)->format('M'))->values()->toArray());
+
+    // Enrollment Trend (Line Chart)
+    new Chart(document.getElementById('enrollmentChart'), {
+        type: 'line',
+        data: {
+            labels: monthLabels,
+            datasets: [{
+                label: 'Enrollments',
+                data: @json($enrollmentData),
+                borderColor: '#4F46E5',
+                backgroundColor: 'rgba(79,70,229,0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#4F46E5',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+
+    // Fee Collection (Bar Chart)
+    new Chart(document.getElementById('feeChart'), {
+        type: 'bar',
+        data: {
+            labels: monthLabels,
+            datasets: [{
+                label: 'Collection',
+                data: @json($feeData),
+                backgroundColor: '#22C55E',
+                borderRadius: 6,
+                maxBarThickness: 40,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { callback: function(v) { return '₦' + v.toLocaleString(); } } }
+            }
+        }
+    });
+
+    // Attendance Overview (Doughnut Chart)
+    new Chart(document.getElementById('attendanceChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Present', 'Absent', 'Late'],
+            datasets: [{
+                data: [{{ $attendanceData['present'] }}, {{ $attendanceData['absent'] }}, {{ $attendanceData['late'] }}],
+                backgroundColor: ['#22C55E', '#EF4444', '#EAB308'],
+                borderWidth: 0,
+                cutout: '65%',
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } }
+            }
+        }
+    });
+
+    // Students by Class (Horizontal Bar Chart)
+    const classNames = @json($classData->keys()->toArray());
+    const classCounts = @json($classData->values()->toArray());
+    new Chart(document.getElementById('classChart'), {
+        type: 'bar',
+        data: {
+            labels: classNames,
+            datasets: [{
+                label: 'Students',
+                data: classCounts,
+                backgroundColor: '#6366F1',
+                borderRadius: 6,
+                maxBarThickness: 36,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+});
+</script>
+@endpush
 @endsection

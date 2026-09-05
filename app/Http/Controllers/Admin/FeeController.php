@@ -7,6 +7,7 @@ use App\Models\ClassModel;
 use App\Models\FeeCategory;
 use App\Models\FeePayment;
 use App\Models\FeeStructure;
+use App\Models\School;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -116,5 +117,13 @@ class FeeController extends Controller
         ]);
 
         return redirect()->route('fees.payments')->with('success', 'Payment recorded successfully.');
+    }
+
+    public function receipt(FeePayment $payment)
+    {
+        $payment->load(['student.user', 'student.class', 'feeStructure.feeCategory', 'school']);
+        $school = $payment->school ?? School::find(Auth::user()->school_id);
+
+        return view('admin.fees.receipt', compact('payment', 'school'));
     }
 }

@@ -3,31 +3,43 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\School;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
     public function index()
     {
-        $school = Auth::user()->school;
+        $school = School::find(auth()->user()->school_id);
         return view('admin.settings.index', compact('school'));
     }
 
     public function update(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+        $school = School::find(auth()->user()->school_id);
+
+        $request->validate([
+            'name' => 'required|string',
             'email' => 'nullable|email',
-            'timezone' => 'nullable|string|max:50',
-            'currency' => 'nullable|string|max:10',
-            'currency_symbol' => 'nullable|string|max:5',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+            'website' => 'nullable|url',
+            'timezone' => 'nullable|string',
+            'currency' => 'nullable|string',
+            'currency_symbol' => 'nullable|string',
+            'academic_week_start' => 'nullable|in:monday,sunday',
+            'date_format' => 'nullable|string',
+            'logo' => 'nullable|image|max:2048',
         ]);
 
-        Auth::user()->school->update($validated);
+        $data = $request->except('logo');
 
-        return redirect()->route('settings.index')->with('success', 'Settings updated successfully.');
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            $data['logo'] = $path;
+        }
+
+        $school->update($data);
+        return redirect()->route('settings.index')->with('success', 'Settings updated.');
     }
 }

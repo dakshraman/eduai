@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassModel;
 use App\Models\Exam;
 use App\Models\ExamResult;
+use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -119,5 +120,77 @@ class ExamController extends Controller
         );
 
         return redirect()->route('exams.show', $exam)->with('success', 'Result saved successfully.');
+    }
+
+    public function results(Exam $exam)
+    {
+        $exam->load('class');
+        $students = Student::with('user')
+            ->where('school_id', Auth::user()->school_id)
+            ->where('class_id', $exam->class_id)
+            ->get();
+        $subjects = Subject::where('school_id', Auth::user()->school_id)
+            ->where('class_id', $exam->class_id)
+            ->get();
+
+        $existingResults = ExamResult::where('exam_id', $exam->id)
+            ->get()
+            ->keyBy(function ($r) {
+                return $r->student_id . '_' . $r->subject_id;
+            });
+
+        return view('admin.exams.results', compact('exam', 'students', 'subjects', 'existingResults'));
+    }
+
+    public function storeResults(Request $request, Exam $exam)
+    {
+        $validated = $request->validate([
+            'marks' => 'required|array',
+            'marks.*' => 'nullable|numeric|min:0',
+        ]);
+
+        $schoolId = Auth::user()->school_id;
+
+        foreach ($validated['marks'] as $key => $marks) {
+            if ($marks === null || $marks === '') {
+                continue;
+            }
+            [$studentId, $subjectId] = explode('_', $key);
+
+            ExamResult::updateOrCreate(
+                [
+                    'exam_id' => $exam->id,
+                    'student_id' => $studentId,
+                    'subject_id' => $subjectId,
+                ],
+                [
+                    'school_id' => $schoolId,
+                    'marks_obtained' => $marks,
+                ]
+            );
+        }
+
+        return redirect()->route('exams.results', $exam)->with('success', 'Results saved successfully.');
+    }
+
+    public function studentResults(Student $student)
+    {
+        $student->load('user', 'class');
+        $schoolId = Auth::user()->school_id;
+
+        $results = ExamResult::with('exam', 'subject')
+            ->where('student_id', $student->id)
+            ->where('school_id', $schoolId)
+            ->get();
+
+        $overallTotal = $results->sum('marks_obtained');
+        $overallFullMark = $results->sum(function ($r) {
+            return $r->subject->full_mark ?? 0;
+        });
+        $overallPercentage = $overallFullMark > 0
+            ? round(($overallTotal / $overallFullMark) * 100, 1)
+            : 0;
+
+        return view('admin.exams.student-results', compact('student', 'results', 'overallTotal', 'overallFullMark', 'overallPercentage'));
     }
 }

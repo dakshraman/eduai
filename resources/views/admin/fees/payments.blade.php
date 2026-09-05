@@ -43,6 +43,7 @@
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Paid</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Date</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Status</th>
+                        <th class="text-right px-5 py-3 font-semibold text-gray-600">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -59,6 +60,12 @@
                                        ($payment->status === 'partial' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700') }}">
                                     {{ ucfirst($payment->status) }}
                                 </span>
+                            </td>
+                            <td class="px-5 py-3 text-right">
+                                <a href="{{ route('fees.receipt', $payment) }}" target="_blank" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition">
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                    Receipt
+                                </a>
                             </td>
                         </tr>
                     @empty

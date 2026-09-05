@@ -64,20 +64,44 @@ class AttendanceController extends Controller
 
     public function report(Request $request)
     {
-        $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
-        $attendances = collect();
+        $schoolId = Auth::user()->school_id;
+        $classes = ClassModel::where('school_id', $schoolId)->get();
         $classId = $request->class_id;
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
+        $startDate = $request->start_date ?? now()->startOfMonth()->toDateString();
+        $endDate = $request->end_date ?? now()->toDateString();
 
-        if ($classId && $startDate && $endDate) {
-            $attendances = Attendance::with('student.user')
-                ->where('school_id', Auth::user()->school_id)
-                ->where('class_id', $classId)
-                ->whereBetween('date', [$startDate, $endDate])
-                ->get();
+        $query = Attendance::where('school_id', $schoolId)
+            ->whereBetween('date', [$startDate, $endDate]);
+
+        if ($classId) {
+            $query->where('class_id', $classId);
         }
 
-        return view('admin.attendance.report', compact('classes', 'attendances', 'classId', 'startDate', 'endDate'));
+        $attendances = $query->with('student.user', 'class')->get();
+
+        $summary = [
+            'total' => $attendances->count(),
+            'present' => $attendances->where('status', 'present')->count(),
+            'absent' => $attendances->where('status', 'absent')->count(),
+            'late' => $attendances->where('status', 'late')->count(),
+            'half_day' => $attendances->where('status', 'half_day')->count(),
+        ];
+
+        $studentSummary = $attendances->groupBy('student_id')->map(function ($records) {
+            $student = $records->first()->student;
+            $total = $records->count();
+            return [
+                'student' => $student,
+                'present' => $records->where('status', 'present')->count(),
+                'absent' => $records->where('status', 'absent')->count(),
+                'late' => $records->where('status', 'late')->count(),
+                'total' => $total,
+                'percentage' => $total > 0
+                    ? round(($records->where('status', 'present')->count() / $total) * 100, 1)
+                    : 0,
+            ];
+        });
+
+        return view('admin.attendance.report', compact('classes', 'attendances', 'summary', 'studentSummary', 'classId', 'startDate', 'endDate'));
     }
 }
