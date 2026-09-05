@@ -8,7 +8,7 @@
     <div class="bg-white rounded-xl border border-gray-200 p-5">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg">
+                <div class="w-12 h-12 rounded-full bg-[#BFECFF]/30 text-[#b5a8e8] flex items-center justify-center font-bold text-lg">
                     {{ strtoupper(substr($student->user->name ?? 'S', 0, 2)) }}
                 </div>
                 <div>
@@ -34,7 +34,7 @@
             </div>
             <div class="w-px h-12 bg-gray-200 hidden sm:block"></div>
             <div class="flex-1 text-center">
-                <div class="text-3xl font-bold text-indigo-600">{{ $overallTotal }}</div>
+                <div class="text-3xl font-bold text-[#CDC1FF]">{{ $overallTotal }}</div>
                 <div class="text-xs font-medium text-gray-500 mt-1">Marks Obtained</div>
             </div>
             <div class="w-px h-12 bg-gray-200 hidden sm:block"></div>
@@ -60,7 +60,7 @@
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Exam Name</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Subject</th>
@@ -82,7 +82,7 @@
                                      ($pct >= 50 ? 'C' :
                                      ($pct >= 40 ? 'D' : 'F')))));
                         @endphp
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="hover:bg-[#FFF6E3] transition">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $result->exam->name ?? '-' }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $result->subject->name ?? '-' }}</td>
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $result->marks_obtained }}</td>

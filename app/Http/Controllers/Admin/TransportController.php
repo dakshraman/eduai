@@ -7,6 +7,7 @@ use App\Models\TransportRoute;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class TransportController extends Controller
 {
@@ -15,7 +16,10 @@ class TransportController extends Controller
         $schoolId = Auth::user()->school_id;
         $routes = TransportRoute::where('school_id', $schoolId)->withCount('vehicles')->get();
         $vehicles = Vehicle::where('school_id', $schoolId)->with('route')->get();
-        return view('admin.transport.index', compact('routes', 'vehicles'));
+        return Inertia::render('Admin/Transport/Index', [
+            'routes' => $routes,
+            'vehicles' => $vehicles,
+        ]);
     }
 
     public function storeRoute(Request $request)

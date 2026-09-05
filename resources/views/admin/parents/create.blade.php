@@ -20,19 +20,19 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                     <input type="text" name="name" value="{{ old('name') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('name') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('name') border-red-500 @enderror">
                     @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                     <input type="email" name="email" value="{{ old('email') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('email') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('email') border-red-500 @enderror">
                     @error('email') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                     <input type="text" name="phone" value="{{ old('phone') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('phone') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('phone') border-red-500 @enderror">
                     @error('phone') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
             </div>
@@ -43,7 +43,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Relation Type *</label>
-                    <select name="relation_type" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                    <select name="relation_type" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition">
                         <option value="">Select</option>
                         <option value="father" {{ old('relation_type') === 'father' ? 'selected' : '' }}>Father</option>
                         <option value="mother" {{ old('relation_type') === 'mother' ? 'selected' : '' }}>Mother</option>
@@ -54,18 +54,18 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Occupation</label>
                     <input type="text" name="occupation" value="{{ old('occupation') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('occupation') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('occupation') border-red-500 @enderror">
                     @error('occupation') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div class="sm:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
                     <input type="text" name="address" value="{{ old('address') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('address') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('address') border-red-500 @enderror">
                     @error('address') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div class="sm:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Link Students</label>
-                    <select name="student_ids[]" multiple class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition" size="4">
+                    <select name="student_ids[]" multiple class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition" size="4">
                         @foreach($students as $student)
                             <option value="{{ $student->id }}" {{ in_array($student->id, old('student_ids', [])) ? 'selected' : '' }}>
                                 {{ $student->user->name }} ({{ $student->admission_number }})
@@ -78,7 +78,7 @@
         </div>
 
         <div class="flex items-center gap-3">
-            <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Add Parent</button>
+            <button type="submit" class="px-6 py-2.5 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold rounded-lg transition">Add Parent</button>
             <a href="{{ route('parents.index') }}" class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition">Cancel</a>
         </div>
     </form>

@@ -17,19 +17,19 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
                 <input type="text" name="title" value="{{ old('title') }}" required
-                       class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('title') border-red-500 @enderror">
+                       class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('title') border-red-500 @enderror">
                 @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Message *</label>
                 <textarea name="message" rows="6" required
-                          class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
+                          class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
                 @error('message') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Notice Type</label>
-                    <select name="notice_type" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                    <select name="notice_type" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition">
                         <option value="general" {{ old('notice_type') === 'general' ? 'selected' : '' }}>General</option>
                         <option value="important" {{ old('notice_type') === 'important' ? 'selected' : '' }}>Important</option>
                         <option value="urgent" {{ old('notice_type') === 'urgent' ? 'selected' : '' }}>Urgent</option>
@@ -38,14 +38,14 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Published At</label>
                     <input type="datetime-local" name="published_at" value="{{ old('published_at', now()->format('Y-m-d\TH:i')) }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('published_at') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('published_at') border-red-500 @enderror">
                     @error('published_at') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
             </div>
         </div>
 
         <div class="flex items-center gap-3">
-            <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Publish Notice</button>
+            <button type="submit" class="px-6 py-2.5 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold rounded-lg transition">Publish Notice</button>
             <a href="{{ route('notices.index') }}" class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition">Cancel</a>
         </div>
     </form>

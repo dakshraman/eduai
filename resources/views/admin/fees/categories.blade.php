@@ -12,10 +12,10 @@
         <form method="POST" action="{{ route('fee-categories.store') }}" class="flex flex-col sm:flex-row gap-3">
             @csrf
             <input type="text" name="name" placeholder="Category name" required
-                   class="flex-1 max-w-xs px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('name') border-red-500 @enderror">
+                   class="flex-1 max-w-xs px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('name') border-red-500 @enderror">
             <input type="text" name="description" placeholder="Description (optional)"
-                   class="flex-1 max-w-sm px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('description') border-red-500 @enderror">
-            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition">Add Category</button>
+                   class="flex-1 max-w-sm px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition @error('description') border-red-500 @enderror">
+            <button type="submit" class="px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-medium rounded-lg transition">Add Category</button>
         </form>
         @error('name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
     </div>
@@ -24,7 +24,7 @@
     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Name</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Description</th>
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($categories ?? [] as $category)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="hover:bg-[#FFF6E3] transition">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $category->name }}</td>
                             <td class="px-5 py-3 text-gray-500">{{ $category->description ?? '-' }}</td>
                             <td class="px-5 py-3 text-right">

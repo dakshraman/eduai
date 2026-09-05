@@ -11,13 +11,16 @@ use App\Models\School;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class FeeController extends Controller
 {
     public function categories()
     {
         $categories = FeeCategory::where('school_id', Auth::user()->school_id)->latest()->paginate(20);
-        return view('admin.fees.categories', compact('categories'));
+        return Inertia::render('Admin/Fees/Categories', [
+            'categories' => $categories,
+        ]);
     }
 
     public function storeCategory(Request $request)
@@ -50,7 +53,11 @@ class FeeController extends Controller
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
         $categories = FeeCategory::where('school_id', Auth::user()->school_id)->get();
 
-        return view('admin.fees.structures', compact('structures', 'classes', 'categories'));
+        return Inertia::render('Admin/Fees/Structures', [
+            'structures' => $structures,
+            'classes' => $classes,
+            'categories' => $categories,
+        ]);
     }
 
     public function storeStructure(Request $request)
@@ -88,7 +95,10 @@ class FeeController extends Controller
             ->where('school_id', Auth::user()->school_id)
             ->get();
 
-        return view('admin.fees.payments', compact('payments', 'students'));
+        return Inertia::render('Admin/Fees/Payments', [
+            'payments' => $payments,
+            'students' => $students,
+        ]);
     }
 
     public function recordPayment(Request $request)
@@ -124,6 +134,9 @@ class FeeController extends Controller
         $payment->load(['student.user', 'student.class', 'feeStructure.feeCategory', 'school']);
         $school = $payment->school ?? School::find(Auth::user()->school_id);
 
-        return view('admin.fees.receipt', compact('payment', 'school'));
+        return Inertia::render('Admin/Fees/Receipt', [
+            'payment' => $payment,
+            'school' => $school,
+        ]);
     }
 }

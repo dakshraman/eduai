@@ -7,6 +7,7 @@ use App\Models\ClassModel;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ClassController extends Controller
 {
@@ -17,12 +18,14 @@ class ClassController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('admin.classes.index', compact('classes'));
+        return Inertia::render('Admin/Classes/Index', [
+            'classes' => $classes,
+        ]);
     }
 
     public function create()
     {
-        return view('admin.classes.create');
+        return Inertia::render('Admin/Classes/Create');
     }
 
     public function store(Request $request)
@@ -45,12 +48,16 @@ class ClassController extends Controller
     public function show(ClassModel $class)
     {
         $class->load('sections');
-        return view('admin.classes.show', compact('class'));
+        return Inertia::render('Admin/Classes/Show', [
+            'class' => $class,
+        ]);
     }
 
     public function edit(ClassModel $class)
     {
-        return view('admin.classes.edit', compact('class'));
+        return Inertia::render('Admin/Classes/Edit', [
+            'class' => $class,
+        ]);
     }
 
     public function update(Request $request, ClassModel $class)

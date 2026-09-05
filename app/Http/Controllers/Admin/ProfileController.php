@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
 
 class ProfileController extends Controller
 {
     public function index()
     {
         $user = auth()->user();
-        return view('admin.profile.index', compact('user'));
+        return Inertia::render('Admin/Profile/Index', [
+            'user' => $user,
+        ]);
     }
 
     public function update(Request $request)

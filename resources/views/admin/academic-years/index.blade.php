@@ -5,11 +5,11 @@
 @section('content')
 <div class="space-y-6">
     <div class="flex items-center gap-3">
-        <h1 class="text-2xl font-bold text-gray-900">Academic Years</h1>
+        <h1 class="text-2xl animate-fade-in-up font-bold text-gray-900">Academic Years</h1>
     </div>
 
     {{-- Add Year Form --}}
-    <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-6">
         <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-3 mb-4">Add Academic Year</h2>
         <form method="POST" action="{{ route('academic-years.store') }}">
             @csrf
@@ -17,39 +17,39 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Year *</label>
                     <input type="text" name="year" value="{{ old('year') }}" placeholder="e.g. 2026-2027" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('year') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi @error('year') border-red-500 @enderror">
                     @error('year') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
                     <input type="text" name="title" value="{{ old('title') }}" placeholder="e.g. Session 2026-2027" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('title') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi @error('title') border-red-500 @enderror">
                     @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
                     <input type="date" name="starting_date" value="{{ old('starting_date') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('starting_date') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi @error('starting_date') border-red-500 @enderror">
                     @error('starting_date') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">End Date *</label>
                     <input type="date" name="ending_date" value="{{ old('ending_date') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('ending_date') border-red-500 @enderror">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi @error('ending_date') border-red-500 @enderror">
                     @error('ending_date') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
             </div>
             <div class="mt-4">
-                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Add Year</button>
+                <button type="submit" class="px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold btn-ripple rounded-xl transition">Add Year</button>
             </div>
         </form>
     </div>
 
     {{-- Years Table --}}
-    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Year</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Title</th>
@@ -61,7 +61,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($years as $year)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="table-row-hover">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $year->year }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $year->title }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $year->starting_date->format('M d, Y') }}</td>
@@ -78,7 +78,7 @@
                                     @if(!$year->is_default)
                                         <form method="POST" action="{{ route('academic-years.activate', $year) }}" class="inline">
                                             @csrf
-                                            <button type="submit" class="px-3 py-1 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition">Activate</button>
+                                            <button type="submit" class="px-3 py-1 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 btn-ripple rounded-xl transition">Activate</button>
                                         </form>
                                     @endif
                                     <form method="POST" action="{{ route('academic-years.destroy', $year) }}" onsubmit="return confirm('Are you sure?')" class="inline">

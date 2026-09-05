@@ -12,7 +12,7 @@
             </a>
             <h1 class="text-2xl font-bold text-gray-900">Book Issues</h1>
         </div>
-        <a href="{{ route('library.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">
+        <a href="{{ route('library.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold rounded-lg transition">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             Issue New Book
         </a>
@@ -22,7 +22,7 @@
     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Book Title</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Student</th>
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($issues as $issue)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="hover:bg-[#FFF6E3] transition">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $issue->book->title ?? 'N/A' }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $issue->student->user->name ?? 'N/A' }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $issue->issue_date?->format('M d, Y') ?? '-' }}</td>

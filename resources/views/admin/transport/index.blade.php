@@ -5,25 +5,25 @@
 @section('content')
 <div class="space-y-6">
     <div class="flex items-center gap-3">
-        <h1 class="text-2xl font-bold text-gray-900">Transport Management</h1>
+        <h1 class="text-2xl animate-fade-in-up font-bold text-gray-900">Transport Management</h1>
     </div>
 
     {{-- Routes Section --}}
-    <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+    <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-6 space-y-4">
         <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-3">Routes</h2>
 
         <form method="POST" action="{{ route('transport.storeRoute') }}" class="flex flex-col sm:flex-row gap-3">
             @csrf
             <input type="text" name="name" placeholder="Route name" required
-                   class="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                   class="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
             <input type="number" name="fare" placeholder="Fare" step="0.01" min="0" required
-                   class="w-32 px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
-            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Add Route</button>
+                   class="w-32 px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
+            <button type="submit" class="px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold btn-ripple rounded-xl transition">Add Route</button>
         </form>
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Name</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Fare</th>
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($routes as $route)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="table-row-hover">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $route->name }}</td>
                             <td class="px-5 py-3 text-gray-600">${{ number_format($route->fare, 2) }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $route->vehicles_count }}</td>
@@ -57,7 +57,7 @@
     </div>
 
     {{-- Vehicles Section --}}
-    <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+    <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-6 space-y-4">
         <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-3">Vehicles</h2>
 
         <form method="POST" action="{{ route('transport.storeVehicle') }}" class="space-y-4">
@@ -66,12 +66,12 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Plate Number *</label>
                     <input type="text" name="plate_number" value="{{ old('plate_number') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                     @error('plate_number') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Vehicle Type *</label>
-                    <select name="vehicle_type" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                    <select name="vehicle_type" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         <option value="">Select</option>
                         <option value="bus" {{ old('vehicle_type') === 'bus' ? 'selected' : '' }}>Bus</option>
                         <option value="van" {{ old('vehicle_type') === 'van' ? 'selected' : '' }}>Van</option>
@@ -82,12 +82,12 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Capacity *</label>
                     <input type="number" name="capacity" value="{{ old('capacity') }}" min="1" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                     @error('capacity') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Route</label>
-                    <select name="transport_route_id" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                    <select name="transport_route_id" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         <option value="">None</option>
                         @foreach($routes as $route)
                             <option value="{{ $route->id }}" {{ old('transport_route_id') == $route->id ? 'selected' : '' }}>{{ $route->name }}</option>
@@ -97,22 +97,22 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Driver Name</label>
                     <input type="text" name="driver_name" value="{{ old('driver_name') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Driver Phone</label>
                     <input type="text" name="driver_phone" value="{{ old('driver_phone') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                 </div>
             </div>
             <div>
-                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Add Vehicle</button>
+                <button type="submit" class="px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold btn-ripple rounded-xl transition">Add Vehicle</button>
             </div>
         </form>
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Plate</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Type</th>
@@ -124,7 +124,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($vehicles as $vehicle)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="table-row-hover">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $vehicle->plate_number }}</td>
                             <td class="px-5 py-3">
                                 <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-700">{{ ucfirst($vehicle->vehicle_type) }}</span>

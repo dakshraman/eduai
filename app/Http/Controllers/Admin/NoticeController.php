@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class NoticeController extends Controller
 {
@@ -16,12 +17,14 @@ class NoticeController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('admin.notices.index', compact('notices'));
+        return Inertia::render('Admin/Notices/Index', [
+            'notices' => $notices,
+        ]);
     }
 
     public function create()
     {
-        return view('admin.notices.create');
+        return Inertia::render('Admin/Notices/Create');
     }
 
     public function store(Request $request)
@@ -49,12 +52,16 @@ class NoticeController extends Controller
     public function show(Notice $notice)
     {
         $notice->load('creator');
-        return view('admin.notices.show', compact('notice'));
+        return Inertia::render('Admin/Notices/Show', [
+            'notice' => $notice,
+        ]);
     }
 
     public function edit(Notice $notice)
     {
-        return view('admin.notices.edit', compact('notice'));
+        return Inertia::render('Admin/Notices/Edit', [
+            'notice' => $notice,
+        ]);
     }
 
     public function update(Request $request, Notice $notice)

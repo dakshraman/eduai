@@ -12,6 +12,7 @@ use App\Models\Notice;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -26,7 +27,6 @@ class DashboardController extends Controller
             'notices' => Notice::where('school_id', $schoolId)->count(),
         ];
 
-        // Monthly enrollment (last 6 months)
         $enrollmentData = [];
         for ($i = 5; $i >= 0; $i--) {
             $date = now()->subMonths($i);
@@ -36,7 +36,6 @@ class DashboardController extends Controller
                 ->count();
         }
 
-        // Fee collection by month (last 6 months)
         $feeData = [];
         for ($i = 5; $i >= 0; $i--) {
             $date = now()->subMonths($i);
@@ -46,7 +45,6 @@ class DashboardController extends Controller
                 ->sum('amount_paid');
         }
 
-        // Attendance this week
         $attendanceData = [
             'present' => Attendance::where('school_id', $schoolId)
                 ->whereBetween('date', [now()->startOfWeek(), now()->endOfWeek()])
@@ -59,7 +57,6 @@ class DashboardController extends Controller
                 ->where('status', 'late')->count(),
         ];
 
-        // Students by class
         $classData = ClassModel::where('school_id', $schoolId)
             ->withCount('students')
             ->get()
@@ -67,6 +64,13 @@ class DashboardController extends Controller
 
         $notices = Notice::where('school_id', $schoolId)->latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'enrollmentData', 'feeData', 'attendanceData', 'classData', 'notices'));
+        return Inertia::render('Admin/Dashboard', [
+            'stats' => $stats,
+            'enrollmentData' => $enrollmentData,
+            'feeData' => $feeData,
+            'attendanceData' => $attendanceData,
+            'classData' => $classData->toArray(),
+            'notices' => $notices,
+        ]);
     }
 }

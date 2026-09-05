@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class TeacherController extends Controller
 {
@@ -24,12 +25,15 @@ class TeacherController extends Controller
 
         $teachers = $query->latest()->paginate(20);
 
-        return view('admin.teachers.index', compact('teachers'));
+        return Inertia::render('Admin/Teachers/Index', [
+            'teachers' => $teachers,
+            'filters' => $request->only(['search']),
+        ]);
     }
 
     public function create()
     {
-        return view('admin.teachers.create');
+        return Inertia::render('Admin/Teachers/Create');
     }
 
     public function store(Request $request)
@@ -81,14 +85,16 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
-        $teacher->load('user');
-        return view('admin.teachers.show', compact('teacher'));
+        return Inertia::render('Admin/Teachers/Show', [
+            'teacher' => $teacher->load('user'),
+        ]);
     }
 
     public function edit(Teacher $teacher)
     {
-        $teacher->load('user');
-        return view('admin.teachers.edit', compact('teacher'));
+        return Inertia::render('Admin/Teachers/Edit', [
+            'teacher' => $teacher->load('user'),
+        ]);
     }
 
     public function update(Request $request, Teacher $teacher)

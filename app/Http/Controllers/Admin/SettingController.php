@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\School;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SettingController extends Controller
 {
     public function index()
     {
         $school = School::find(auth()->user()->school_id);
-        return view('admin.settings.index', compact('school'));
+        return Inertia::render('Admin/Settings/Index', [
+            'school' => $school,
+        ]);
     }
 
     public function update(Request $request)

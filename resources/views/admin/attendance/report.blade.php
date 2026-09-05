@@ -17,7 +17,7 @@
         <form method="GET" class="flex flex-col sm:flex-row gap-3 items-end">
             <div class="flex-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Class</label>
-                <select name="class_id" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                <select name="class_id" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition">
                     <option value="">All Classes</option>
                     @foreach($classes as $class)
                         <option value="{{ $class->id }}" {{ $classId == $class->id ? 'selected' : '' }}>{{ $class->name }}</option>
@@ -26,13 +26,13 @@
             </div>
             <div class="flex-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-                <input type="date" name="start_date" value="{{ $startDate }}" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                <input type="date" name="start_date" value="{{ $startDate }}" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition">
             </div>
             <div class="flex-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-                <input type="date" name="end_date" value="{{ $endDate }}" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                <input type="date" name="end_date" value="{{ $endDate }}" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition">
             </div>
-            <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">
+            <button type="submit" class="px-6 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold rounded-lg transition">
                 Search
             </button>
         </form>
@@ -73,7 +73,7 @@
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Student Name</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Present</th>
@@ -85,7 +85,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($studentSummary as $sid => $record)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="hover:bg-[#FFF6E3] transition">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $record['student']->user->name ?? '-' }}</td>
                             <td class="px-5 py-3 text-green-600 font-medium">{{ $record['present'] }}</td>
                             <td class="px-5 py-3 text-red-600 font-medium">{{ $record['absent'] }}</td>

@@ -5,17 +5,17 @@
 @section('content')
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 class="text-2xl font-bold text-gray-900">Exams</h1>
-        <a href="{{ route('exams.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">
+        <h1 class="text-2xl animate-fade-in-up font-bold text-gray-900">Exams</h1>
+        <a href="{{ route('exams.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold btn-ripple rounded-xl transition">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             Add Exam
         </a>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Name</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Class</th>
@@ -27,7 +27,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($exams ?? [] as $exam)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="table-row-hover">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $exam->name }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $exam->class->name ?? '-' }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $exam->start_date ? \Carbon\Carbon::parse($exam->start_date)->format('M d, Y') : '-' }}</td>
@@ -40,7 +40,7 @@
                                 </span>
                             </td>
                             <td class="px-5 py-3 text-right">
-                                <a href="{{ route('exams.results', $exam) }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition">
+                                <a href="{{ route('exams.results', $exam) }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-[#CDC1FF] hover:text-[#b5a8e8] hover:bg-[#BFECFF]/20 btn-ripple rounded-xl transition">
                                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                     Results
                                 </a>

@@ -25,7 +25,7 @@
                     </span>
                 </div>
             </div>
-            <a href="{{ route('exams.show', $exam) }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">&larr; Back to Exam</a>
+            <a href="{{ route('exams.show', $exam) }}" class="text-sm text-[#CDC1FF] hover:text-[#b5a8e8] font-medium">&larr; Back to Exam</a>
         </div>
     </div>
 
@@ -44,7 +44,7 @@
             <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead class="bg-gray-50 border-b border-gray-200">
+                        <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                             <tr>
                                 <th class="text-left px-5 py-3 font-semibold text-gray-600 sticky left-0 bg-gray-50">#</th>
                                 <th class="text-left px-5 py-3 font-semibold text-gray-600 sticky left-10 bg-gray-50">Student Name</th>
@@ -59,7 +59,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @foreach($students as $student)
-                                <tr class="hover:bg-gray-50 transition">
+                                <tr class="hover:bg-[#FFF6E3] transition">
                                     <td class="px-5 py-3 text-gray-500 sticky left-0 bg-white">{{ $loop->iteration }}</td>
                                     <td class="px-5 py-3 font-medium text-gray-900 sticky left-10 bg-white">{{ $student->user->name ?? '-' }}</td>
                                     <td class="px-5 py-3 text-gray-600">{{ $student->roll_number ?? '-' }}</td>
@@ -73,7 +73,7 @@
                                                    value="{{ $existing }}"
                                                    min="0" max="{{ $subject->full_mark ?? 100 }}" step="0.5"
                                                    placeholder="0"
-                                                   class="w-20 px-2 py-1.5 text-center rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                                                   class="w-20 px-2 py-1.5 text-center rounded-lg border border-gray-300 text-sm focus:border-[#BFECFF] focus:ring-2 focus:ring-[#BFECFF]/30 transition">
                                         </td>
                                     @endforeach
                                 </tr>
@@ -82,7 +82,7 @@
                     </table>
                 </div>
                 <div class="px-5 py-4 border-t border-gray-200 flex justify-end">
-                    <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">
+                    <button type="submit" class="px-6 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold rounded-lg transition">
                         Save All Results
                     </button>
                 </div>

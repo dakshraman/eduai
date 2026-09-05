@@ -1,72 +1,54 @@
-@extends('layouts.guest')
-
-@section('title', 'Register')
-
+@extends('layouts.guest', ['title' => 'Register'])
 @section('content')
-<form method="POST" action="{{ route('register') }}" class="space-y-4">
-    @csrf
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-            <label for="school_name" class="block text-sm font-medium text-gray-700 mb-1">School Name</label>
-            <input id="school_name" type="text" name="school_name" value="{{ old('school_name') }}" required autofocus
-                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('school_name') border-red-500 @enderror">
-            @error('school_name')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-        <div>
-            <label for="school_code" class="block text-sm font-medium text-gray-700 mb-1">School Code</label>
-            <input id="school_code" type="text" name="school_code" value="{{ old('school_code') }}" required
-                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('school_code') border-red-500 @enderror">
-            @error('school_code')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-    </div>
-
+<div class="space-y-6">
     <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Admin Full Name</label>
-        <input id="name" type="text" name="name" value="{{ old('name') }}" required
-               class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('name') border-red-500 @enderror">
-        @error('name')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
+        <h1 class="text-2xl font-bold tracking-tight text-foreground">Create your school</h1>
+        <p class="text-muted-foreground mt-1">Start your 14-day free trial</p>
     </div>
 
-    <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username"
-               class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('email') border-red-500 @enderror">
-        @error('email')
-            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-        @enderror
-    </div>
+    <form method="POST" action="{{ route('register') }}" class="space-y-4">
+        @csrf
+        <div class="space-y-4">
+            <h3 class="text-sm font-medium text-muted-foreground uppercase tracking-wider">School</h3>
+            <x-ui.input name="school_name" label="School Name" value="{{ old('school_name') }}" placeholder="Oakridge Academy" required />
+            @error('school_name') <p class="text-sm text-destructive">{{ $message }}</p> @enderror
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input id="password" type="password" name="password" required autocomplete="new-password"
-                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('password') border-red-500 @enderror">
-            @error('password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <x-ui.input name="school_code" label="School Code" value="{{ old('school_code') }}" placeholder="OAK" required />
+            @error('school_code') <p class="text-sm text-destructive">{{ $message }}</p> @enderror
         </div>
-        <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
-                   class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+
+        <x-ui.separator />
+
+        <div class="space-y-4">
+            <h3 class="text-sm font-medium text-muted-foreground uppercase tracking-wider">Admin Account</h3>
+            <x-ui.input name="name" label="Full Name" value="{{ old('name') }}" placeholder="John Doe" required />
+            @error('name') <p class="text-sm text-destructive">{{ $message }}</p> @enderror
+
+            <x-ui.input name="email" type="email" label="Email" value="{{ old('email') }}" placeholder="admin@school.com" required />
+            @error('email') <p class="text-sm text-destructive">{{ $message }}</p> @enderror
+
+            <x-ui.input name="password" type="password" label="Password" placeholder="Min 8 characters" required />
+            @error('password') <p class="text-sm text-destructive">{{ $message }}</p> @enderror
+
+            <x-ui.input name="password_confirmation" type="password" label="Confirm Password" placeholder="Repeat password" required />
         </div>
-    </div>
 
-    <button type="submit"
-            class="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-        Create Account
-    </button>
+        @if($errors->any())
+            <x-ui.alert variant="destructive">
+                <ul class="list-disc list-inside text-sm">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </x-ui.alert>
+        @endif
 
-    <p class="text-center text-sm text-gray-500">
+        <x-ui.button type="submit" class="w-full">Create account</x-ui.button>
+    </form>
+
+    <p class="text-center text-sm text-muted-foreground">
         Already have an account?
-        <a href="{{ route('login') }}" class="text-indigo-600 hover:text-indigo-700 font-medium">Sign In</a>
+        <a href="{{ route('login') }}" class="font-medium text-primary hover:underline">Sign in</a>
     </p>
-</form>
+</div>
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
@@ -16,12 +17,14 @@ class EventController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('admin.events.index', compact('events'));
+        return Inertia::render('Admin/Events/Index', [
+            'events' => $events,
+        ]);
     }
 
     public function create()
     {
-        return view('admin.events.create');
+        return Inertia::render('Admin/Events/Create');
     }
 
     public function store(Request $request)
@@ -51,12 +54,16 @@ class EventController extends Controller
     public function show(Event $event)
     {
         $event->load('creator');
-        return view('admin.events.show', compact('event'));
+        return Inertia::render('Admin/Events/Show', [
+            'event' => $event,
+        ]);
     }
 
     public function edit(Event $event)
     {
-        return view('admin.events.edit', compact('event'));
+        return Inertia::render('Admin/Events/Edit', [
+            'event' => $event,
+        ]);
     }
 
     public function update(Request $request, Event $event)

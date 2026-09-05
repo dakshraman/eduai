@@ -7,6 +7,7 @@ use App\Models\ClassModel;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class SubjectController extends Controller
 {
@@ -21,13 +22,18 @@ class SubjectController extends Controller
         $subjects = $query->latest()->paginate(20);
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
 
-        return view('admin.subjects.index', compact('subjects', 'classes'));
+        return Inertia::render('Admin/Subjects/Index', [
+            'subjects' => $subjects,
+            'classes' => $classes,
+        ]);
     }
 
     public function create()
     {
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
-        return view('admin.subjects.create', compact('classes'));
+        return Inertia::render('Admin/Subjects/Create', [
+            'classes' => $classes,
+        ]);
     }
 
     public function store(Request $request)
@@ -56,13 +62,18 @@ class SubjectController extends Controller
     public function show(Subject $subject)
     {
         $subject->load('class', 'examResults');
-        return view('admin.subjects.show', compact('subject'));
+        return Inertia::render('Admin/Subjects/Show', [
+            'subject' => $subject,
+        ]);
     }
 
     public function edit(Subject $subject)
     {
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
-        return view('admin.subjects.edit', compact('subject', 'classes'));
+        return Inertia::render('Admin/Subjects/Edit', [
+            'subject' => $subject,
+            'classes' => $classes,
+        ]);
     }
 
     public function update(Request $request, Subject $subject)

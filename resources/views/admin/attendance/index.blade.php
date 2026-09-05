@@ -4,20 +4,20 @@
 
 @section('content')
 <div class="space-y-6">
-    <h1 class="text-2xl font-bold text-gray-900">Attendance</h1>
+    <h1 class="text-2xl animate-fade-in-up font-bold text-gray-900">Attendance</h1>
 
     {{-- Class & Date selector --}}
-    <div class="bg-white rounded-xl border border-gray-200 p-5">
+    <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-5">
         <form method="GET" class="flex flex-col sm:flex-row gap-3">
-            <select name="class_id" required class="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+            <select name="class_id" required class="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                 <option value="">Select Class</option>
                 @foreach($classes ?? [] as $class)
                     <option value="{{ $class->id }}" {{ request('class_id') == $class->id ? 'selected' : '' }}>{{ $class->name }}</option>
                 @endforeach
             </select>
             <input type="date" name="date" value="{{ request('date', date('Y-m-d')) }}" required
-                   class="px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
-            <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition">Load Students</button>
+                   class="px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
+            <button type="submit" class="px-6 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-medium btn-ripple rounded-xl transition">Load Students</button>
         </form>
     </div>
 
@@ -28,10 +28,10 @@
             <input type="hidden" name="class_id" value="{{ request('class_id') }}">
             <input type="hidden" name="date" value="{{ request('date', date('Y-m-d')) }}">
 
-            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead class="bg-gray-50 border-b border-gray-200">
+                        <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                             <tr>
                                 <th class="text-left px-5 py-3 font-semibold text-gray-600">Name</th>
                                 <th class="text-center px-5 py-3 font-semibold text-gray-600">Present</th>
@@ -42,7 +42,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @foreach($students as $student)
-                                <tr class="hover:bg-gray-50 transition">
+                                <tr class="table-row-hover">
                                     <td class="px-5 py-3 font-medium text-gray-900">{{ $student->name }}</td>
                                     <td class="px-5 py-3 text-center">
                                         <input type="radio" name="attendance[{{ $student->id }}]" value="present"
@@ -70,12 +70,12 @@
                     </table>
                 </div>
                 <div class="px-5 py-4 border-t border-gray-100">
-                    <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Save Attendance</button>
+                    <button type="submit" class="px-6 py-2.5 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold btn-ripple rounded-xl transition">Save Attendance</button>
                 </div>
             </div>
         </form>
     @elseif(request('class_id'))
-        <div class="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400 text-sm">
+        <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-12 text-center text-gray-400 text-sm">
             No students found for this class.
         </div>
     @endif

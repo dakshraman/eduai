@@ -9,6 +9,7 @@ use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AttendanceController extends Controller
 {
@@ -26,7 +27,12 @@ class AttendanceController extends Controller
                 ->get();
         }
 
-        return view('admin.attendance.index', compact('classes', 'students', 'date', 'classId'));
+        return Inertia::render('Admin/Attendance/Index', [
+            'classes' => $classes,
+            'students' => $students,
+            'date' => $date,
+            'classId' => $classId,
+        ]);
     }
 
     public function store(Request $request)
@@ -102,6 +108,14 @@ class AttendanceController extends Controller
             ];
         });
 
-        return view('admin.attendance.report', compact('classes', 'attendances', 'summary', 'studentSummary', 'classId', 'startDate', 'endDate'));
+        return Inertia::render('Admin/Attendance/Report', [
+            'classes' => $classes,
+            'attendances' => $attendances,
+            'summary' => $summary,
+            'studentSummary' => $studentSummary->values(),
+            'classId' => $classId,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ]);
     }
 }

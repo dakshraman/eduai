@@ -88,4 +88,9 @@ class School extends Model
     {
         return $this->hasMany(Exam::class);
     }
+
+    public function subscription()
+    {
+        return $this->hasOne(SchoolSubscription::class);
+    }
 }

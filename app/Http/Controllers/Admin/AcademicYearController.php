@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AcademicYearController extends Controller
 {
@@ -13,7 +14,9 @@ class AcademicYearController extends Controller
     {
         $schoolId = Auth::user()->school_id;
         $years = AcademicYear::where('school_id', $schoolId)->latest()->get();
-        return view('admin.academic-years.index', compact('years'));
+        return Inertia::render('Admin/AcademicYears/Index', [
+            'years' => $years,
+        ]);
     }
 
     public function store(Request $request)

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\BookIssue;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class LibraryController extends Controller
 {
@@ -19,7 +21,12 @@ class LibraryController extends Controller
             'issued' => BookIssue::where('school_id', $schoolId)->where('status', 'issued')->count(),
             'overdue' => BookIssue::where('school_id', $schoolId)->where('status', 'overdue')->count(),
         ];
-        return view('admin.library.index', compact('books', 'stats'));
+        $students = Student::with('user')->where('school_id', $schoolId)->get();
+        return Inertia::render('Admin/Library/Index', [
+            'books' => $books,
+            'stats' => $stats,
+            'students' => $students,
+        ]);
     }
 
     public function storeBook(Request $request)
@@ -86,6 +93,8 @@ class LibraryController extends Controller
     {
         $schoolId = auth()->user()->school_id;
         $issues = BookIssue::where('school_id', $schoolId)->with('book', 'student.user')->latest()->get();
-        return view('admin.library.issues', compact('issues'));
+        return Inertia::render('Admin/Library/Issues', [
+            'issues' => $issues,
+        ]);
     }
 }

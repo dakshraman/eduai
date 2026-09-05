@@ -3,135 +3,113 @@
 @section('title', 'Add Student')
 
 @section('content')
-<div class="max-w-4xl space-y-6">
-    <div class="flex items-center gap-3">
-        <a href="{{ route('students.index') }}" class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        </a>
-        <h1 class="text-2xl font-bold text-gray-900">Add Student</h1>
+<div class="space-y-6 animate-fade-in-up">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight">Add Student</h1>
+            <p class="text-muted-foreground">Add a new student to the system</p>
+        </div>
+        <x-ui.button variant="outline" href="{{ route('students.index') }}">Cancel</x-ui.button>
     </div>
 
-    <form method="POST" action="{{ route('students.store') }}" enctype="multipart/form-data" class="space-y-6">
+    <form method="POST" action="{{ route('students.store') }}" enctype="multipart/form-data">
         @csrf
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <x-ui.card>
+                <x-ui.card-header>
+                    <x-ui.card-title>Personal Information</x-ui.card-title>
+                </x-ui.card-header>
+                <x-ui.card-content class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Full Name *</label>
+                        <x-ui.input name="name" value="{{ old('name') }}" placeholder="Enter full name" />
+                        @error('name') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Email *</label>
+                        <x-ui.input type="email" name="email" value="{{ old('email') }}" placeholder="student@email.com" />
+                        @error('email') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Password *</label>
+                        <x-ui.input type="password" name="password" placeholder="••••••••" />
+                        @error('password') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Phone</label>
+                        <x-ui.input name="phone" value="{{ old('phone') }}" placeholder="Phone number" />
+                        @error('phone') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Gender</label>
+                            <x-ui.select name="gender" placeholder="Select gender" :options="['male' => 'Male', 'female' => 'Female', 'other' => 'Other']" :value="old('gender')" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Date of Birth</label>
+                            <x-ui.input type="date" name="dob" value="{{ old('dob') }}" />
+                            @error('dob') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Blood Group</label>
+                            <x-ui.select name="blood_group" placeholder="Select" :options="['A+','A-','B+','B-','AB+','AB-','O+','O-']" :value="old('blood_group')" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Religion</label>
+                            <x-ui.input name="religion" value="{{ old('religion') }}" placeholder="Religion" />
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Avatar</label>
+                        <x-ui.input type="file" name="avatar" />
+                        @error('avatar') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                </x-ui.card-content>
+            </x-ui.card>
 
-        {{-- Personal Info --}}
-        <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-            <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-3">Personal Information</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                    <input type="text" name="name" value="{{ old('name') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('name') border-red-500 @enderror">
-                    @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                    <input type="email" name="email" value="{{ old('email') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('email') border-red-500 @enderror">
-                    @error('email') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
-                    <input type="password" name="password" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('password') border-red-500 @enderror">
-                    @error('password') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                    <input type="text" name="phone" value="{{ old('phone') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('phone') border-red-500 @enderror">
-                    @error('phone') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                    <select name="gender" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
-                        <option value="">Select</option>
-                        <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Male</option>
-                        <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Female</option>
-                        <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>Other</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                    <input type="date" name="dob" value="{{ old('dob') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('dob') border-red-500 @enderror">
-                    @error('dob') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Blood Group</label>
-                    <select name="blood_group" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
-                        <option value="">Select</option>
-                        @foreach(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $group)
-                            <option value="{{ $group }}" {{ old('blood_group') === $group ? 'selected' : '' }}>{{ $group }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Religion</label>
-                    <input type="text" name="religion" value="{{ old('religion') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('religion') border-red-500 @enderror">
-                    @error('religion') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div class="sm:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
-                    <input type="file" name="avatar" accept="image/*"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('avatar') border-red-500 @enderror">
-                    @error('avatar') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-            </div>
-        </div>
-
-        {{-- Student Info --}}
-        <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-            <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-3">Student Information</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Class *</label>
-                    <select name="class_id" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('class_id') border-red-500 @enderror">
-                        <option value="">Select Class</option>
-                        @foreach($classes ?? [] as $class)
-                            <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>{{ $class->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('class_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Section</label>
-                    <input type="text" name="section" value="{{ old('section') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('section') border-red-500 @enderror">
-                    @error('section') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Admission Number *</label>
-                    <input type="text" name="admission_number" value="{{ old('admission_number') }}" required
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('admission_number') border-red-500 @enderror">
-                    @error('admission_number') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Roll Number</label>
-                    <input type="text" name="roll_number" value="{{ old('roll_number') }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('roll_number') border-red-500 @enderror">
-                    @error('roll_number') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Admission Date</label>
-                    <input type="date" name="admission_date" value="{{ old('admission_date', date('Y-m-d')) }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('admission_date') border-red-500 @enderror">
-                    @error('admission_date') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Session Year</label>
-                    <input type="text" name="session_year" value="{{ old('session_year', date('Y')) }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition @error('session_year') border-red-500 @enderror">
-                    @error('session_year') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-            </div>
-        </div>
-
-        {{-- Actions --}}
-        <div class="flex items-center gap-3">
-            <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Add Student</button>
-            <a href="{{ route('students.index') }}" class="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition">Cancel</a>
+            <x-ui.card>
+                <x-ui.card-header>
+                    <x-ui.card-title>Student Information</x-ui.card-title>
+                </x-ui.card-header>
+                <x-ui.card-content class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Class *</label>
+                        <x-ui.select name="class_id" placeholder="Select class" :options="$classes->pluck('name','id')->toArray()" :value="old('class_id')" />
+                        @error('class_id') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Section</label>
+                        <x-ui.input name="section" value="{{ old('section') }}" placeholder="Section" />
+                        @error('section') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Admission Number *</label>
+                        <x-ui.input name="admission_number" value="{{ old('admission_number') }}" placeholder="Admission number" />
+                        @error('admission_number') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Roll Number</label>
+                        <x-ui.input name="roll_number" value="{{ old('roll_number') }}" placeholder="Roll number" />
+                        @error('roll_number') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Admission Date</label>
+                        <x-ui.input type="date" name="admission_date" value="{{ old('admission_date', date('Y-m-d')) }}" />
+                        @error('admission_date') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Session Year</label>
+                        <x-ui.input name="session_year" value="{{ old('session_year', date('Y')) }}" placeholder="Session year" />
+                        @error('session_year') <p class="text-sm text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                </x-ui.card-content>
+                <x-ui.card-footer class="flex justify-end gap-2">
+                    <x-ui.button variant="outline" href="{{ route('students.index') }}">Cancel</x-ui.button>
+                    <x-ui.button type="submit">Add Student</x-ui.button>
+                </x-ui.card-footer>
+            </x-ui.card>
         </div>
     </form>
 </div>

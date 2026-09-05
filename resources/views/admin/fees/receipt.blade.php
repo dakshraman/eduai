@@ -9,7 +9,7 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: #f3f4f6; padding: 2rem; color: #1f2937; }
         .receipt { max-width: 700px; margin: 0 auto; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
-        .header { background: #4f46e5; color: #fff; padding: 2rem; text-align: center; }
+        .header { background: #BFECFF; color: #fff; padding: 2rem; text-align: center; }
         .header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
         .header p { font-size: 0.875rem; opacity: 0.9; }
         .body { padding: 2rem; }
@@ -20,11 +20,11 @@
         .details-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
         .details-table th { text-align: left; padding: 0.75rem; background: #f9fafb; border: 1px solid #e5e7eb; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; }
         .details-table td { padding: 0.75rem; border: 1px solid #e5e7eb; font-size: 0.9rem; }
-        .total-row td { background: #f0f0ff; font-weight: 700; font-size: 1rem; }
+        .total-row td { background: #FFF6E3; font-weight: 700; font-size: 1rem; }
         .footer { border-top: 1px solid #e5e7eb; padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: #9ca3af; }
-        .stamp { display: inline-block; border: 2px solid #4f46e5; color: #4f46e5; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 700; text-transform: uppercase; font-size: 0.875rem; margin-top: 1rem; }
-        .print-btn { display: block; margin: 1.5rem auto 0; padding: 0.625rem 2rem; background: #4f46e5; color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
-        .print-btn:hover { background: #4338ca; }
+        .stamp { display: inline-block; border: 2px solid #BFECFF; color: #BFECFF; padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 700; text-transform: uppercase; font-size: 0.875rem; margin-top: 1rem; }
+        .print-btn { display: block; margin: 1.5rem auto 0; padding: 0.625rem 2rem; background: #BFECFF; color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+        .print-btn:hover { background: #9dd8f5; }
         @media print {
             body { background: #fff; padding: 0; }
             .receipt { border: none; border-radius: 0; box-shadow: none; }
@@ -40,7 +40,7 @@
         </div>
 
         <div class="body">
-            <h2 style="text-align:center; font-size:1.25rem; font-weight:700; margin-bottom:1.5rem; color:#4f46e5;">FEE RECEIPT</h2>
+            <h2 style="text-align:center; font-size:1.25rem; font-weight:700; margin-bottom:1.5rem; color:#BFECFF;">FEE RECEIPT</h2>
 
             <div class="info-grid">
                 <div class="info-group">

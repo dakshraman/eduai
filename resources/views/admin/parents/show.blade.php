@@ -28,7 +28,7 @@
             </div>
             <div>
                 <p class="text-xs text-gray-500 uppercase tracking-wide">Relation</p>
-                <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700">{{ ucfirst($parent->relation_type) }}</span>
+                <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-[#BFECFF]/30 text-[#b5a8e8]">{{ ucfirst($parent->relation_type) }}</span>
             </div>
             <div>
                 <p class="text-xs text-gray-500 uppercase tracking-wide">Occupation</p>
@@ -47,7 +47,7 @@
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b border-gray-200">
+                <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                     <tr>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Name</th>
                         <th class="text-left px-5 py-3 font-semibold text-gray-600">Admission No.</th>
@@ -56,7 +56,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($parent->students as $student)
-                        <tr class="hover:bg-gray-50 transition">
+                        <tr class="hover:bg-[#FFF6E3] transition">
                             <td class="px-5 py-3 font-medium text-gray-900">{{ $student->user->name }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $student->admission_number }}</td>
                             <td class="px-5 py-3 text-gray-600">{{ $student->class->name ?? '-' }} {{ $student->section->name ?? '' }}</td>
@@ -72,7 +72,7 @@
     </div>
 
     <div class="flex items-center gap-3">
-        <a href="{{ route('parents.edit', $parent) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">Edit Parent</a>
+        <a href="{{ route('parents.edit', $parent) }}" class="px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold rounded-lg transition">Edit Parent</a>
         <a href="{{ route('parents.index') }}" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition">Back to List</a>
     </div>
 </div>

@@ -6,8 +6,8 @@
 <div class="space-y-6">
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 class="text-2xl font-bold text-gray-900">Library Management</h1>
-        <a href="{{ route('library.issues') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">
+        <h1 class="text-2xl animate-fade-in-up font-bold text-gray-900">Library Management</h1>
+        <a href="{{ route('library.issues') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold btn-ripple rounded-xl transition">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z"/></svg>
             View Issues
         </a>
@@ -15,19 +15,19 @@
 
     {{-- Stats --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
+        <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-5">
             <div class="text-sm font-medium text-gray-500">Total Books</div>
             <div class="mt-1 text-3xl font-bold text-gray-900">{{ $stats['total_books'] }}</div>
         </div>
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
+        <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-5">
             <div class="text-sm font-medium text-gray-500">Available</div>
             <div class="mt-1 text-3xl font-bold text-green-600">{{ $stats['available'] }}</div>
         </div>
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
+        <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-5">
             <div class="text-sm font-medium text-gray-500">Issued</div>
             <div class="mt-1 text-3xl font-bold text-blue-600">{{ $stats['issued'] }}</div>
         </div>
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
+        <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-5">
             <div class="text-sm font-medium text-gray-500">Overdue</div>
             <div class="mt-1 text-3xl font-bold text-red-600">{{ $stats['overdue'] }}</div>
         </div>
@@ -35,17 +35,17 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {{-- Books Table --}}
-        <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div class="lg:col-span-2 bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 overflow-hidden">
             <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h2 class="text-lg font-semibold text-gray-900">Books</h2>
-                <button @click="showAddBook = true" class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition">
+                <button @click="showAddBook = true" class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-xs font-semibold btn-ripple rounded-xl transition">
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     Add Book
                 </button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-200">
+                    <thead class="bg-[#FFF6E3]/50 border-b border-[#BFECFF]/20">
                         <tr>
                             <th class="text-left px-5 py-3 font-semibold text-gray-600">Title</th>
                             <th class="text-left px-5 py-3 font-semibold text-gray-600">Author</th>
@@ -59,7 +59,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($books as $book)
-                            <tr class="hover:bg-gray-50 transition">
+                            <tr class="table-row-hover">
                                 <td class="px-5 py-3 font-medium text-gray-900">{{ $book->title }}</td>
                                 <td class="px-5 py-3 text-gray-600">{{ $book->author }}</td>
                                 <td class="px-5 py-3 text-gray-600">{{ $book->isbn ?? '-' }}</td>
@@ -91,13 +91,13 @@
         </div>
 
         {{-- Issue Book Form --}}
-        <div class="bg-white rounded-xl border border-gray-200 p-6 h-fit" x-data="{ open: true }">
+        <div class="bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 p-6 h-fit" x-data="{ open: true }">
             <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-3 mb-4">Issue Book</h2>
             <form method="POST" action="{{ route('library.issueBook') }}" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Select Book *</label>
-                    <select name="book_id" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                    <select name="book_id" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         <option value="">Choose a book</option>
                         @foreach($books->filter(fn($b) => $b->available_quantity > 0) as $book)
                             <option value="{{ $book->id }}">{{ $book->title }} ({{ $book->available_quantity }} available)</option>
@@ -107,7 +107,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Student *</label>
-                    <select name="student_id" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                    <select name="student_id" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         <option value="">Choose a student</option>
                         @php
                             $students = \App\Models\Student::where('school_id', auth()->user()->school_id)->with('user')->get();
@@ -121,10 +121,10 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Due Date *</label>
                     <input type="date" name="due_date" required min="{{ now()->toDateString() }}"
-                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                           class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                     @error('due_date') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
-                <button type="submit" class="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition">
+                <button type="submit" class="w-full px-4 py-2.5 bg-[#BFECFF]/200 hover:bg-primary-600 text-[#1e293b] text-sm font-semibold btn-ripple rounded-xl transition">
                     Issue Book
                 </button>
             </form>
@@ -155,32 +155,32 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="sm:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
-                            <input type="text" name="title" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                            <input type="text" name="title" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Author *</label>
-                            <input type="text" name="author" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                            <input type="text" name="author" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">ISBN</label>
-                            <input type="text" name="isbn" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                            <input type="text" name="isbn" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                            <input type="text" name="category" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                            <input type="text" name="category" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
-                            <input type="number" name="quantity" value="1" min="1" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                            <input type="number" name="quantity" value="1" min="1" required class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Shelf Number</label>
-                            <input type="text" name="shelf_number" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition">
+                            <input type="text" name="shelf_number" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm input-scandi">
                         </div>
                     </div>
                     <div class="flex justify-end gap-3 pt-2">
-                        <button type="button" @click="showAddBook = false" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition">Cancel</button>
-                        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition">Add Book</button>
+                        <button type="button" @click="showAddBook = false" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 btn-ripple rounded-xl transition">Cancel</button>
+                        <button type="submit" class="px-4 py-2 text-sm font-semibold text-white bg-[#BFECFF]/200 hover:bg-primary-600 btn-ripple rounded-xl transition">Add Book</button>
                     </div>
                 </form>
             </div>

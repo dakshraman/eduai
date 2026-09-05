@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class ParentController extends Controller
 {
@@ -25,14 +26,18 @@ class ParentController extends Controller
         }
 
         $parents = $query->latest()->paginate(20);
-        return view('admin.parents.index', compact('parents'));
+        return Inertia::render('Admin/Parents/Index', [
+            'parents' => $parents,
+        ]);
     }
 
     public function create()
     {
         $schoolId = Auth::user()->school_id;
         $students = Student::where('school_id', $schoolId)->with('user')->get();
-        return view('admin.parents.create', compact('students'));
+        return Inertia::render('Admin/Parents/Create', [
+            'students' => $students,
+        ]);
     }
 
     public function store(Request $request)
@@ -77,8 +82,10 @@ class ParentController extends Controller
 
     public function show(ParentModel $parent)
     {
-        $parent->load('user', 'students');
-        return view('admin.parents.show', compact('parent'));
+        $parent->load('user', 'students.user', 'students.class');
+        return Inertia::render('Admin/Parents/Show', [
+            'parent' => $parent,
+        ]);
     }
 
     public function edit(ParentModel $parent)
@@ -86,8 +93,12 @@ class ParentController extends Controller
         $parent->load('user');
         $schoolId = Auth::user()->school_id;
         $students = Student::where('school_id', $schoolId)->with('user')->get();
-        $parentStudentIds = $parent->students->pluck('id')->toArray();
-        return view('admin.parents.edit', compact('parent', 'students', 'parentStudentIds'));
+        $selectedStudents = $parent->students->pluck('id');
+        return Inertia::render('Admin/Parents/Edit', [
+            'parent' => $parent,
+            'students' => $students,
+            'selectedStudents' => $selectedStudents,
+        ]);
     }
 
     public function update(Request $request, ParentModel $parent)

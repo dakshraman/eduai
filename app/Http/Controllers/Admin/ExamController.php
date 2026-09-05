@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ExamController extends Controller
 {
@@ -20,13 +21,18 @@ class ExamController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('admin.exams.index', compact('exams'));
+        return Inertia::render('Admin/Exams/Index', [
+            'exams' => $exams,
+            'classes' => ClassModel::where('school_id', Auth::user()->school_id)->get(),
+        ]);
     }
 
     public function create()
     {
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
-        return view('admin.exams.create', compact('classes'));
+        return Inertia::render('Admin/Exams/Create', [
+            'classes' => $classes,
+        ]);
     }
 
     public function store(Request $request)
@@ -59,13 +65,19 @@ class ExamController extends Controller
             ->where('class_id', $exam->class_id)
             ->get();
 
-        return view('admin.exams.show', compact('exam', 'subjects'));
+        return Inertia::render('Admin/Exams/Show', [
+            'exam' => $exam,
+            'subjects' => $subjects,
+        ]);
     }
 
     public function edit(Exam $exam)
     {
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
-        return view('admin.exams.edit', compact('exam', 'classes'));
+        return Inertia::render('Admin/Exams/Edit', [
+            'exam' => $exam,
+            'classes' => $classes,
+        ]);
     }
 
     public function update(Request $request, Exam $exam)
@@ -139,7 +151,12 @@ class ExamController extends Controller
                 return $r->student_id . '_' . $r->subject_id;
             });
 
-        return view('admin.exams.results', compact('exam', 'students', 'subjects', 'existingResults'));
+        return Inertia::render('Admin/Exams/Results', [
+            'exam' => $exam,
+            'students' => $students,
+            'subjects' => $subjects,
+            'existingResults' => $existingResults,
+        ]);
     }
 
     public function storeResults(Request $request, Exam $exam)
@@ -191,6 +208,12 @@ class ExamController extends Controller
             ? round(($overallTotal / $overallFullMark) * 100, 1)
             : 0;
 
-        return view('admin.exams.student-results', compact('student', 'results', 'overallTotal', 'overallFullMark', 'overallPercentage'));
+        return Inertia::render('Admin/Exams/StudentResults', [
+            'student' => $student,
+            'results' => $results,
+            'overallTotal' => $overallTotal,
+            'overallFullMark' => $overallFullMark,
+            'overallPercentage' => $overallPercentage,
+        ]);
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class StudentController extends Controller
 {
@@ -32,13 +33,19 @@ class StudentController extends Controller
         $students = $query->latest()->paginate(20);
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
 
-        return view('admin.students.index', compact('students', 'classes'));
+        return Inertia::render('Admin/Students/Index', [
+            'students' => $students,
+            'classes' => $classes,
+            'filters' => $request->only(['search', 'class_id']),
+        ]);
     }
 
     public function create()
     {
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
-        return view('admin.students.create', compact('classes'));
+        return Inertia::render('Admin/Students/Create', [
+            'classes' => $classes,
+        ]);
     }
 
     public function store(Request $request)
@@ -89,13 +96,18 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         $student->load(['user', 'class', 'section', 'attendances', 'feePayments.feeStructure.feeCategory', 'examResults.exam', 'examResults.subject']);
-        return view('admin.students.show', compact('student'));
+        return Inertia::render('Admin/Students/Show', [
+            'student' => $student,
+        ]);
     }
 
     public function edit(Student $student)
     {
         $classes = ClassModel::where('school_id', Auth::user()->school_id)->get();
-        return view('admin.students.edit', compact('student', 'classes'));
+        return Inertia::render('Admin/Students/Edit', [
+            'student' => $student->load('user'),
+            'classes' => $classes,
+        ]);
     }
 
     public function update(Request $request, Student $student)
