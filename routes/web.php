@@ -65,13 +65,18 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:super_admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('schools', SuperAdminSchoolController::class)->except(['index', 'show']);
     Route::get('/schools', [SuperAdminSchoolController::class, 'index'])->name('schools.index');
     Route::get('/schools/{school}', [SuperAdminSchoolController::class, 'show'])->name('schools.show');
     Route::post('/schools/{school}/activate', [SuperAdminSchoolController::class, 'toggle'])->name('schools.toggle');
     Route::post('/schools/{school}/extend-trial', [SuperAdminSchoolController::class, 'extendTrial'])->name('schools.extendTrial');
 
+    Route::resource('plans', SuperAdminPlanController::class)->except(['index', 'show']);
     Route::get('/plans', [SuperAdminPlanController::class, 'index'])->name('plans.index');
     Route::post('/plans/{plan}/toggle', [SuperAdminPlanController::class, 'toggle'])->name('plans.toggle');
+
+    Route::get('/settings', [\App\Http\Controllers\SuperAdmin\SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [\App\Http\Controllers\SuperAdmin\SettingsController::class, 'update'])->name('settings.update');
 });
 
 /*

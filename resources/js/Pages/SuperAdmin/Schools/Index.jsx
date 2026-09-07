@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Search, Eye } from 'lucide-react';
+import { Plus, Search, Eye, Pencil, Trash2 } from 'lucide-react';
 
 const STATUS_STYLES = {
     active: 'bg-emerald-100 text-emerald-700',
@@ -25,6 +25,12 @@ export default function Index({ schools, filters }) {
         get('/superadmin/schools', { preserveState: true, onFinish: () => setSearching(false) });
     };
 
+    const destroy = (school) => {
+        if (confirm(`Delete "${school.name}"? This cannot be undone.`)) {
+            router.delete(`/superadmin/schools/${school.id}`);
+        }
+    };
+
     return (
         <AppLayout title="Schools">
             <div className="space-y-6">
@@ -33,6 +39,9 @@ export default function Index({ schools, filters }) {
                         <h1 className="text-2xl font-bold tracking-tight">Schools</h1>
                         <p className="text-muted-foreground">Manage all schools on the platform</p>
                     </div>
+                    <Link href="/superadmin/schools/create">
+                        <Button className="gap-2"><Plus className="h-4 w-4" /> Add School</Button>
+                    </Link>
                 </div>
 
                 <Card>
@@ -83,11 +92,17 @@ export default function Index({ schools, filters }) {
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <Button variant="ghost" size="sm" asChild>
-                                                <Link href={`/superadmin/schools/${school.id}`} className="gap-1">
-                                                    <Eye className="h-4 w-4" /> View
+                                            <div className="flex items-center justify-end gap-1">
+                                                <Link href={`/superadmin/schools/${school.id}`}>
+                                                    <Button variant="ghost" size="icon"><Eye className="h-4 w-4" /></Button>
                                                 </Link>
-                                            </Button>
+                                                <Link href={`/superadmin/schools/${school.id}/edit`}>
+                                                    <Button variant="ghost" size="icon"><Pencil className="h-4 w-4" /></Button>
+                                                </Link>
+                                                <Button variant="ghost" size="icon" className="text-destructive" onClick={() => destroy(school)}>
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 )) : (

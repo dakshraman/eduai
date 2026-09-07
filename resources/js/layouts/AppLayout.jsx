@@ -22,7 +22,8 @@ const NAVIGATION = {
     super_admin: [
         { name: 'Dashboard', href: '/superadmin', icon: LayoutDashboard },
         { name: 'Schools', href: '/superadmin/schools', icon: Building2 },
-        { name: 'Subscription Plans', href: '/superadmin/plans', icon: CreditCard },
+        { name: 'Plans', href: '/superadmin/plans', icon: CreditCard },
+        { name: 'Settings', href: '/superadmin/settings', icon: Settings },
     ],
     admin: [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
