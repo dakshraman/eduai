@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             SchoolSeeder::class,
             AdminSeeder::class,
             SubscriptionPlanSeeder::class,
+            PanelUserSeeder::class,
         ]);
     }
 }

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import { 
-    LayoutDashboard, Users, GraduationCap, UserCheck, BookOpen, 
+    LayoutDashboard, Users, GraduationCap, UserCheck, BookOpen, BookMarked,
     Calendar, ClipboardCheck, DollarSign, FileText, Bell, CalendarDays,
     Truck, Library, Clock, CreditCard, Settings, LogOut, Menu,
-    ChevronLeft, ChevronRight, User
+    ChevronLeft, ChevronRight, User, Building2, School, ShieldCheck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -18,41 +18,98 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Students', href: '/students', icon: Users },
-    { name: 'Teachers', href: '/teachers', icon: GraduationCap },
-    { name: 'Parents', href: '/parents', icon: UserCheck },
-    { name: 'Classes', href: '/classes', icon: BookOpen },
-    { name: 'Attendance', href: '/attendance', icon: ClipboardCheck },
-    { name: 'Fees', href: '/fees/categories', icon: DollarSign },
-    { name: 'Exams', href: '/exams', icon: FileText },
-    { name: 'Notices', href: '/notices', icon: Bell },
-    { name: 'Events', href: '/events', icon: CalendarDays },
-    { name: 'Transport', href: '/transport', icon: Truck },
-    { name: 'Library', href: '/library', icon: Library },
-    { name: 'Academic Years', href: '/academic-years', icon: Clock },
-    { name: 'Billing', href: '/billing', icon: CreditCard },
-    { name: 'Settings', href: '/settings', icon: Settings },
-];
+const NAVIGATION = {
+    super_admin: [
+        { name: 'Dashboard', href: '/superadmin', icon: LayoutDashboard },
+        { name: 'Schools', href: '/superadmin/schools', icon: Building2 },
+        { name: 'Subscription Plans', href: '/superadmin/plans', icon: CreditCard },
+    ],
+    admin: [
+        { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+        { name: 'Students', href: '/students', icon: Users },
+        { name: 'Teachers', href: '/teachers', icon: GraduationCap },
+        { name: 'Parents', href: '/parents', icon: UserCheck },
+        { name: 'Classes', href: '/classes', icon: BookOpen },
+        { name: 'Subjects', href: '/subjects', icon: BookMarked },
+        { name: 'Attendance', href: '/attendance', icon: ClipboardCheck },
+        { name: 'Fees', href: '/fees/categories', icon: DollarSign },
+        { name: 'Exams', href: '/exams', icon: FileText },
+        { name: 'Notices', href: '/notices', icon: Bell },
+        { name: 'Events', href: '/events', icon: CalendarDays },
+        { name: 'Transport', href: '/transport', icon: Truck },
+        { name: 'Library', href: '/library', icon: Library },
+        { name: 'Academic Years', href: '/academic-years', icon: Clock },
+        { name: 'Billing', href: '/billing', icon: CreditCard },
+        { name: 'Settings', href: '/settings', icon: Settings },
+    ],
+    accountant: [
+        { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+        { name: 'Fees', href: '/fees/categories', icon: DollarSign },
+        { name: 'Payments', href: '/fees/payments', icon: CreditCard },
+        { name: 'Students', href: '/students', icon: Users },
+        { name: 'Classes', href: '/classes', icon: BookOpen },
+        { name: 'Billing', href: '/billing', icon: CreditCard },
+    ],
+    teacher: [
+        { name: 'Dashboard', href: '/teacher', icon: LayoutDashboard },
+        { name: 'Attendance', href: '/teacher/attendance', icon: ClipboardCheck },
+        { name: 'Exams', href: '/teacher/exams', icon: FileText },
+        { name: 'Notices', href: '/teacher/notices', icon: Bell },
+    ],
+    student: [
+        { name: 'Dashboard', href: '/student', icon: LayoutDashboard },
+        { name: 'My Attendance', href: '/student/attendance', icon: ClipboardCheck },
+        { name: 'My Results', href: '/student/results', icon: FileText },
+        { name: 'My Fees', href: '/student/fees', icon: DollarSign },
+        { name: 'Notices', href: '/student/notices', icon: Bell },
+    ],
+    parent: [
+        { name: 'Dashboard', href: '/parent', icon: LayoutDashboard },
+    ],
+};
+
+const PANEL_LABELS = {
+    super_admin: 'Superadmin',
+    admin: 'Account Admin',
+    accountant: 'Account Admin',
+    teacher: 'Teacher',
+    student: 'Student',
+    parent: 'Parent',
+};
+
+const BRAND_HREFS = {
+    super_admin: '/superadmin',
+    teacher: '/teacher',
+    student: '/student',
+    parent: '/parent',
+};
 
 function SidebarContent({ collapsed, setCollapsed }) {
-    const { url } = usePage();
+    const { url, auth } = usePage();
+    const role = auth?.user?.role || 'admin';
+    const navigation = NAVIGATION[role] || NAVIGATION.admin;
+    const brandHref = BRAND_HREFS[role] || '/dashboard';
+    const panelLabel = PANEL_LABELS[role] || 'Account Admin';
     
     return (
         <div className="flex h-full flex-col bg-card border-r border-border">
             <div className="flex h-14 items-center border-b border-border px-4">
-                <Link href="/dashboard" className="flex items-center gap-2">
+                <Link href={brandHref} className="flex items-center gap-2">
                     <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                         <span className="text-sm font-bold text-primary-foreground">E</span>
                     </div>
-                    {!collapsed && <span className="font-semibold text-lg">EduAI</span>}
+                    {!collapsed && (
+                        <div className="flex flex-col leading-tight">
+                            <span className="font-semibold text-lg">EduAI</span>
+                            <span className="text-[10px] uppercase tracking-wide text-muted-foreground">{panelLabel}</span>
+                        </div>
+                    )}
                 </Link>
             </div>
             
             <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
                 {navigation.map((item) => {
-                    const isActive = url.startsWith(item.href);
+                    const isActive = url === item.href || (item.href !== '/' && url.startsWith(item.href + '/'));
                     return (
                         <Link
                             key={item.name}
@@ -84,6 +141,7 @@ export default function AppLayout({ children, title }) {
     const [mobileOpen, setMobileOpen] = useState(false);
     const { auth, flash } = usePage().props;
     const user = auth?.user;
+    const role = user?.role || 'admin';
     
     const initials = user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U';
     
@@ -129,12 +187,16 @@ export default function AppLayout({ children, title }) {
                             <DropdownMenuItem asChild>
                                 <Link href="/profile">Profile</Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Link href="/settings">Settings</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Link href="/billing">Billing</Link>
-                            </DropdownMenuItem>
+                            {(role === 'admin' || role === 'accountant') && (
+                                <>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/settings">Settings</Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/billing">Billing</Link>
+                                    </DropdownMenuItem>
+                                </>
+                            )}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem 
                                 className="text-destructive cursor-pointer"

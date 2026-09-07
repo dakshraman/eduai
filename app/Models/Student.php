@@ -63,6 +63,6 @@ class Student extends Model
 
     public function parents(): BelongsToMany
     {
-        return $this->belongsToMany(ParentModel::class, 'student_parent');
+        return $this->belongsToMany(ParentModel::class, 'student_parent', 'student_id', 'parent_id');
     }
 }

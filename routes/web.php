@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\BillingController;
 use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\BillingController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
@@ -18,6 +18,20 @@ use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\TransportController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Parent\ChildController as ParentChildController;
+use App\Http\Controllers\Parent\DashboardController as ParentDashboardController;
+use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\ExamController as StudentExamController;
+use App\Http\Controllers\Student\FeeController as StudentFeeController;
+use App\Http\Controllers\Student\NoticeController as StudentNoticeController;
+use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\PlanController as SuperAdminPlanController;
+use App\Http\Controllers\SuperAdmin\SchoolController as SuperAdminSchoolController;
+use App\Http\Controllers\Teacher\AttendanceController as TeacherAttendanceController;
+use App\Http\Controllers\Teacher\DashboardController as TeacherDashboardController;
+use App\Http\Controllers\Teacher\ExamController as TeacherExamController;
+use App\Http\Controllers\Teacher\NoticeController as TeacherNoticeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,9 +44,43 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
+/*
+|--------------------------------------------------------------------------
+| Shared (any authenticated role) — profile & logout
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Superadmin panel — platform-wide management
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:super_admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/schools', [SuperAdminSchoolController::class, 'index'])->name('schools.index');
+    Route::get('/schools/{school}', [SuperAdminSchoolController::class, 'show'])->name('schools.show');
+    Route::post('/schools/{school}/activate', [SuperAdminSchoolController::class, 'toggle'])->name('schools.toggle');
+    Route::post('/schools/{school}/extend-trial', [SuperAdminSchoolController::class, 'extendTrial'])->name('schools.extendTrial');
+
+    Route::get('/plans', [SuperAdminPlanController::class, 'index'])->name('plans.index');
+    Route::post('/plans/{plan}/toggle', [SuperAdminPlanController::class, 'toggle'])->name('plans.toggle');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Account Admin panel — school-level management (admin + accountant)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:admin,accountant'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('students', StudentController::class);
     Route::resource('teachers', TeacherController::class);
@@ -57,10 +105,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/exams/{exam}/results', [ExamController::class, 'results'])->name('exams.results');
     Route::post('/exams/{exam}/results', [ExamController::class, 'storeResults'])->name('exams.storeResults');
     Route::get('/students/{student}/results', [ExamController::class, 'studentResults'])->name('exams.studentResults');
-
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
@@ -89,4 +133,53 @@ Route::middleware('auth')->group(function () {
     Route::delete('/transport/routes/{transportRoute}', [TransportController::class, 'destroyRoute'])->name('transport.destroyRoute');
     Route::post('/transport/vehicles', [TransportController::class, 'storeVehicle'])->name('transport.storeVehicle');
     Route::delete('/transport/vehicles/{vehicle}', [TransportController::class, 'destroyVehicle'])->name('transport.destroyVehicle');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Teacher panel — attendance marking, exam results, notices
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
+    Route::get('/', [TeacherDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/attendance', [TeacherAttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [TeacherAttendanceController::class, 'store'])->name('attendance.store');
+
+    Route::get('/exams', [TeacherExamController::class, 'index'])->name('exams.index');
+    Route::get('/exams/{exam}/results', [TeacherExamController::class, 'results'])->name('exams.results');
+    Route::post('/exams/{exam}/results', [TeacherExamController::class, 'storeResults'])->name('exams.storeResults');
+
+    Route::get('/notices', [TeacherNoticeController::class, 'index'])->name('notices.index');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Student panel — my attendance, results, fees, notices
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
+    Route::get('/', [StudentDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/attendance', [StudentAttendanceController::class, 'index'])->name('attendance.index');
+
+    Route::get('/results', [StudentExamController::class, 'results'])->name('results.index');
+
+    Route::get('/fees', [StudentFeeController::class, 'index'])->name('fees.index');
+
+    Route::get('/notices', [StudentNoticeController::class, 'index'])->name('notices.index');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Parent panel — linked children overview
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:parent'])->prefix('parent')->name('parent.')->group(function () {
+    Route::get('/', [ParentDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/children/{student}', [ParentChildController::class, 'show'])->name('children.show');
+    Route::get('/children/{student}/attendance', [ParentChildController::class, 'attendance'])->name('children.attendance');
+    Route::get('/children/{student}/results', [ParentChildController::class, 'results'])->name('children.results');
+    Route::get('/children/{student}/fees', [ParentChildController::class, 'fees'])->name('children.fees');
 });

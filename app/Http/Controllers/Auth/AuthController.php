@@ -34,7 +34,7 @@ class AuthController extends Controller
                 return back()->withErrors(['email' => 'Your account has been deactivated.']);
             }
 
-            return redirect()->intended('/dashboard');
+            return redirect()->intended($this->dashboardFor($user->role));
         }
 
         return back()->withErrors([
@@ -85,5 +85,16 @@ class AuthController extends Controller
         Auth::login($user);
 
         return redirect('/dashboard');
+    }
+
+    private function dashboardFor(string $role): string
+    {
+        return match ($role) {
+            'super_admin' => '/superadmin',
+            'teacher' => '/teacher',
+            'student' => '/student',
+            'parent' => '/parent',
+            default => '/dashboard',
+        };
     }
 }

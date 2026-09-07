@@ -29,31 +29,31 @@ class ClassModel extends Model
 
     public function sections(): HasMany
     {
-        return $this->hasMany(Section::class);
+        return $this->hasMany(Section::class, 'class_id');
     }
 
     public function subjects(): HasMany
     {
-        return $this->hasMany(Subject::class);
+        return $this->hasMany(Subject::class, 'class_id');
     }
 
     public function students(): HasMany
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'class_id');
     }
 
     public function feeStructures(): HasMany
     {
-        return $this->hasMany(FeeStructure::class);
+        return $this->hasMany(FeeStructure::class, 'class_id');
     }
 
     public function exams(): HasMany
     {
-        return $this->hasMany(Exam::class);
+        return $this->hasMany(Exam::class, 'class_id');
     }
 
     public function attendances(): HasMany
     {
-        return $this->hasMany(Attendance::class);
+        return $this->hasMany(Attendance::class, 'class_id');
     }
 }
