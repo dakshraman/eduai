@@ -109,31 +109,6 @@ class ExamController extends Controller
         return redirect()->route('exams.index')->with('success', 'Exam deleted successfully.');
     }
 
-    public function storeResult(Request $request, Exam $exam)
-    {
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'marks_obtained' => 'required|numeric|min:0',
-            'remarks' => 'nullable|string|max:255',
-        ]);
-
-        ExamResult::updateOrCreate(
-            [
-                'exam_id' => $exam->id,
-                'student_id' => $validated['student_id'],
-                'subject_id' => $validated['subject_id'],
-            ],
-            [
-                'school_id' => Auth::user()->school_id,
-                'marks_obtained' => $validated['marks_obtained'],
-                'remarks' => $validated['remarks'] ?? null,
-            ]
-        );
-
-        return redirect()->route('exams.show', $exam)->with('success', 'Result saved successfully.');
-    }
-
     public function results(Exam $exam)
     {
         $exam->load('class');
