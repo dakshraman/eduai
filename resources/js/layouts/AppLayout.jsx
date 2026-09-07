@@ -86,8 +86,9 @@ const BRAND_HREFS = {
 };
 
 function SidebarContent({ collapsed, setCollapsed }) {
-    const { url, auth } = usePage();
-    const role = auth?.user?.role || 'admin';
+    const { props, url } = usePage();
+    const auth = props?.auth;
+    const role = auth?.user?.role ?? 'admin';
     const navigation = NAVIGATION[role] || NAVIGATION.admin;
     const brandHref = BRAND_HREFS[role] || '/dashboard';
     const panelLabel = PANEL_LABELS[role] || 'Account Admin';
@@ -142,7 +143,7 @@ export default function AppLayout({ children, title }) {
     const [mobileOpen, setMobileOpen] = useState(false);
     const { auth, flash } = usePage().props;
     const user = auth?.user;
-    const role = user?.role || 'admin';
+    const role = user?.role ?? 'admin';
     
     const initials = user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U';
     

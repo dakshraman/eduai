@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class AuthController extends Controller
 {
@@ -34,7 +35,7 @@ class AuthController extends Controller
                 return back()->withErrors(['email' => 'Your account has been deactivated.']);
             }
 
-            return redirect()->intended($this->dashboardFor($user->role));
+            return Inertia::location($this->dashboardFor($user->role));
         }
 
         return back()->withErrors([
